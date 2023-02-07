@@ -100,7 +100,7 @@ module Authoreyes
       def options_for_permit(object_or_sym = nil, options = {}, bang = true)
         context = object = nil
         if object_or_sym.nil?
-          context = controller_name.to_sym
+          context = controller_context
         elsif !Authorization.is_a_association_proxy?(object_or_sym) && object_or_sym.is_a?(Symbol)
           context = object_or_sym
         else
@@ -113,6 +113,10 @@ module Authoreyes
                    bang: bang }.merge(options)
         result[:user] = current_user unless result.key?(:user)
         result
+      end
+
+      def controller_context
+        self.class.name.gsub(/Controller/, '').gsub(/::/, '_').underscore.to_sym
       end
 
       class_methods do
