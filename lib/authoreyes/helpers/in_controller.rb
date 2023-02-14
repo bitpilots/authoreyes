@@ -18,7 +18,7 @@ module Authoreyes
 
       ActionController::Base.send(:define_method, :redirect_if_unauthorized) do
         begin
-          permitted_to! action_name
+          permitted_to! action_name, authorization_object
         rescue Authoreyes::Authorization::NotAuthorized => e
           session[:request_unauthorized] = true
           Rails.logger.warn "[Authoreyes] #{e}"
